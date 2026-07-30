@@ -3611,8 +3611,13 @@ schemes = {
                 "is_restricted"
             ),  # maybe is_suspended instead of is_banned?
             "social_links": lambda x: [
-                {"discord": x.get("discord")},
-                {"twitter/x": x.get("twitter")},
+                {k: v}
+                for item in [
+                    {"discord": x.get("discord")},
+                    {"twitter/x": x.get("twitter")},
+                ]
+                for k, v in item.items()
+                if v is not None
             ],
         },
     },
