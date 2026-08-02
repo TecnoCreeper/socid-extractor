@@ -3646,6 +3646,26 @@ schemes = {
             'created_at':       lambda x: parse_datetime_str(x['createdAt']) if x.get('createdAt') else None,
         },
     },
+    "vsco": {
+        "url_hints": ("vsco.co"),
+        "flags": ["assets.vsco.co", "VSCO®"],
+        "bs": True,
+        "fields": {  # assuming you can't have @ ( ) in display name and username
+            "username": lambda x: (
+                x.find("title")
+                .contents[0]
+                .split("@", maxsplit=1)[1]
+                .split(")", maxsplit=1)[0]
+                .strip()
+            ),
+            "fullname": lambda x: (
+                x.find("title").contents[0].split("(", maxsplit=1)[0].strip()
+            ),
+            "bio": lambda x: x.find(
+                lambda y: y.name == "meta" and y.get("name") == "description"
+            )["content"],
+        },
+    },
 }
 
 # -- Plugin loading (must come after the built-in schemes dict is defined) --
